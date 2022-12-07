@@ -4,9 +4,22 @@ export function createOrderServer() {
   return createServer({
     routes: function () {
       let attempts = 0;
+
+      this.post("/api/orders/:id", (schema, request) => {
+        const orderId = request.params.id;
+
+        if(['error-id'].includes(orderId)) {
+          throw Error('error')
+        }
+
+        return {
+          orderId: orderId,
+          status: 'notified'
+        }
+      })
+
       this.get("/api/orders/:id", (schema, request) => {
         const orderId = request.params.id;
-        console.log(orderId)
         if(['slow-id'].includes(orderId)) {
           if(attempts < 3) {
             attempts = attempts + 1;
