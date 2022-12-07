@@ -1,5 +1,5 @@
 .app {
-  width: 800px;
+  width: 600px;
   margin-inline: auto;
 }
 
@@ -9,4 +9,28 @@
   padding: 0.6rem 1rem;
   margin-block: 1rem;
   box-shadow: 0 0 10px -8px rgba(0,0,0,0.3);
+}
+
+.buttonContainer {
+  display: flex;
+}
+
+.primaryButton {
+  margin-left: auto;
+  font-family: "Gill Sans", "Ubuntu", sans-serif;
+  border: none;
+  padding: 0.4rem 1rem;
+  border-radius: 0.1rem;
+  background-color: #e23e57;
+  color: white;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.primaryButton:disabled {
+  opacity: 0.5;
+}
+
+.container p {
+  margin-block: 1rem;
 }
