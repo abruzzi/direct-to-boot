@@ -1,8 +1,9 @@
 import {useEffect, useState} from "react";
 import {useMutation, useQuery} from "@tanstack/react-query";
-import axios from "axios/index";
+import axios from "axios";
 
-export type Status = "initialised" | "notified" | "error";
+export type Status = "initialised" | "ready" | "notified" | "error";
+
 const maxRetries = 10;
 export const useOrderStatus = (orderId: string) => {
   const [status, setStatus] = useState<Status>("initialised");
@@ -37,6 +38,12 @@ export const useOrderStatus = (orderId: string) => {
     }
   }, [count]);
 
+  useEffect(() => {
+    if(order.status === 'ready') {
+      setStatus('ready')
+    }
+  }, [order]);
+
   const mutation = useMutation({
     mutationFn: async (id: string) => {
       const res = await axios.post(`/api/orders/${orderId}`, {id: id})
@@ -55,7 +62,6 @@ export const useOrderStatus = (orderId: string) => {
   }
 
   return {
-    order,
     status,
     notifyStore
   }

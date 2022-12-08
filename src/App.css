@@ -27,6 +27,14 @@
   font-size: 1.2rem;
 }
 
+.primaryButton:hover {
+  opacity: 0.9;
+}
+
+.primaryButton:active {
+  opacity: 1;
+}
+
 .primaryButton:disabled {
   opacity: 0.5;
 }

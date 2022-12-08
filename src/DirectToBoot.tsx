@@ -3,6 +3,7 @@ import {Status, useOrderStatus} from "./useOrderStatus";
 const getMessage = (status: Status) => {
   switch (status) {
     case 'initialised':
+    case 'ready':
       return "Please click the button when you have arrived, one of our friendly staff will bring your order to you.";
     case 'notified':
       return "Thanks for letting us know, your order will come to you in a minute";
@@ -11,20 +12,21 @@ const getMessage = (status: Status) => {
   }
 }
 
-const CallStoreButton = () => <button className="primaryButton" data-testid="call-the-store">Call the store</button>
+function createButton(status: Status, notifyStore: () => void) {
+  if (status === 'error') {
+    return <button className="primaryButton" data-testid="call-the-store">Call the store</button>
+  } else if (status === 'initialised') {
+    return <button className="primaryButton" disabled>I am here</button>
+  } else if (status === 'ready') {
+    return <button className="primaryButton" onClick={notifyStore}>I am here</button>
+  } else if (status === 'notified') {
+    return null;
+  }
+}
 
 export function DirectToBoot({orderId}: { orderId: string }) {
-  const {order, status, notifyStore} = useOrderStatus(orderId);
-
-  let button = null;
-
-  if (status === 'error') {
-    button = <CallStoreButton/>
-  } else if(status === 'initialised') {
-    button = <button className="primaryButton" disabled={order.status !== 'ready'} onClick={notifyStore}>I am here</button>
-  } else if (status === 'notified') {
-    button = null
-  }
+  const {status, notifyStore} = useOrderStatus(orderId);
+  const button = createButton(status, notifyStore);
 
   return <div className="container">
     <h3>Direct To Boot</h3>
