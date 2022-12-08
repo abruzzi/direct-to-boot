@@ -20,6 +20,14 @@ export function createOrderServer() {
 
       this.get("/api/orders/:id", (schema, request) => {
         const orderId = request.params.id;
+
+        if(['inaccessible'].includes(orderId)) {
+          return {
+            orderId: orderId,
+            status: 'not-ready'
+          }
+        }
+
         if(['slow-id'].includes(orderId)) {
           if(attempts < 3) {
             attempts = attempts + 1;

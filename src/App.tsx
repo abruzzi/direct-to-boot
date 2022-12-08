@@ -10,7 +10,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <div className="app">
-        <DirectToBoot orderId="id-123" />
+        <DirectToBoot orderId="inaccessible" />
       </div>
     </QueryClientProvider>
   );
