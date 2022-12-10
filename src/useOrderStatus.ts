@@ -5,6 +5,7 @@ import axios from "axios";
 export type Status = "initialised" | "ready" | "notified" | "error";
 
 const maxRetries = 10;
+
 export const useOrderStatus = (orderId: string) => {
   const [status, setStatus] = useState<Status>("initialised");
   const [count, setCount] = useState(0);

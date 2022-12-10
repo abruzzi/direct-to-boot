@@ -8,7 +8,7 @@ export function createOrderServer() {
       this.post("/api/orders/:id", (schema, request) => {
         const orderId = request.params.id;
 
-        if(['error-id'].includes(orderId)) {
+        if (['error-id'].includes(orderId)) {
           throw Error('error')
         }
 
@@ -21,15 +21,20 @@ export function createOrderServer() {
       this.get("/api/orders/:id", (schema, request) => {
         const orderId = request.params.id;
 
-        if(['inaccessible'].includes(orderId)) {
+        if (['error'].includes(orderId)) {
+          // @ts-ignore
+          return new Response(500, {}, { errors: ["The downstream is not responding"] })
+        }
+
+        if (['inaccessible'].includes(orderId)) {
           return {
             orderId: orderId,
             status: 'not-ready'
           }
         }
 
-        if(['slow-id'].includes(orderId)) {
-          if(attempts < 3) {
+        if (['slow-id'].includes(orderId)) {
+          if (attempts < 3) {
             attempts = attempts + 1;
             return {
               orderId: orderId,
