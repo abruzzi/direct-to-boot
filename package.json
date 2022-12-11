@@ -30,11 +30,6 @@
       "react-app/jest"
     ]
   },
-  "jest": {
-    "moduleNameMapper": {
-      "axios": "axios/dist/node/axios.cjs"
-    }
-  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -48,6 +43,7 @@
     ]
   },
   "devDependencies": {
-    "miragejs": "^0.1.46"
+    "miragejs": "^0.1.46",
+    "prettier": "^2.8.1"
   }
 }

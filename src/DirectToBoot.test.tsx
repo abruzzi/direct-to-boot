@@ -1,87 +1,47 @@
-import {render, screen, waitFor} from "@testing-library/react";
-import {DirectToBoot} from "./DirectToBoot";
-import {Server} from "miragejs/server";
-import {createOrderServer} from "./createOrderServer";
-import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
-import {ReactElement} from "react";
-import userEvent from "@testing-library/user-event";
+import { render, screen } from "@testing-library/react";
+import { DirectToBoot } from "./DirectToBoot";
 
-let server: Server;
-const queryClient = new QueryClient();
+describe("direct to boot", () => {
+  it("renders the initial state of DirectToBoot section", () => {
+    render(<DirectToBoot orderId="order-id" status="initialised" />);
 
-const wrapper = ({ children }: { children: ReactElement}) => (
-  <QueryClientProvider client={queryClient}>
-    {children}
-  </QueryClientProvider>
-);
+    expect(screen.getByText("Direct To Boot")).toBeInTheDocument();
+    expect(screen.getByText("We're preparing your order...")).toBeInTheDocument();
 
-const customRender = (ui: ReactElement) =>
-  render(ui, {wrapper})
-
-
-describe('Direct To Boot', () => {
-  beforeEach(() => {
-    server = createOrderServer()
-  })
-
-  afterEach(() => {
-    server.shutdown()
-  })
-
-  it('shows the content', () => {
-    customRender(<DirectToBoot orderId="id-123"/>)
-    expect(screen.getByText('Direct To Boot')).toBeInTheDocument();
-    expect(screen.getByText('Please click the button when you have arrived, one of our friendly staff will bring your order to you.')).toBeInTheDocument();
-  })
-
-  it('shows the i am here button', () => {
-    customRender(<DirectToBoot orderId="id-123"/>)
-    expect(screen.getByRole('button')).toBeInTheDocument();
-    expect(screen.getByText('I am here')).toBeInTheDocument();
-  })
-
-  it('shows the button as disabled by default', () => {
-    customRender(<DirectToBoot orderId="id-123"/>)
-    const button = screen.getByRole('button');
+    const button = screen.getByRole("button");
+    expect(button).toBeInTheDocument();
     expect(button).toBeDisabled();
+  });
+
+  it('enables the button when the order is ready', () => {
+    render(<DirectToBoot orderId="order-id" status="ready" />);
+
+    expect(screen.getByText("Direct To Boot")).toBeInTheDocument();
+    expect(screen.getByText("Please click the button when vou have arrived. one of our friendly staff will bring your order to you.")).toBeInTheDocument();
+
+    const button = screen.getByRole("button");
+    expect(button).toBeInTheDocument();
+    expect(button).toBeEnabled();
   })
 
-  it('enable the button when remote is ready', async () => {
-    customRender(<DirectToBoot orderId="id-123" />)
-    const button = screen.getByRole('button');
-    expect(button).toBeDisabled();
 
-    await waitFor(() => expect(screen.getByRole('button')).toBeEnabled(), {
-      timeout: 5000,
-    });
+  it('shows store number when error occurs', () => {
+    render(<DirectToBoot orderId="order-id" status="error" />);
+
+    expect(screen.getByText("Direct To Boot")).toBeInTheDocument();
+    expect(screen.getByText("Seems something went wrong, you can call the following number to notify us instead.")).toBeInTheDocument();
+
+    const button = screen.getByText('04-23-33');
+    expect(button).toBeInTheDocument();
   })
 
-  it('should notify the remote', async () => {
-    customRender(<DirectToBoot orderId="id-123" />)
-    await waitFor(() => expect(screen.getByRole('button')).toBeEnabled(), {
-      timeout: 5000,
-    });
+  it('shows a message that indicate the store is notified', () => {
+    render(<DirectToBoot orderId="order-id" status="notified" />);
 
-    const button = screen.getByRole('button');
-    userEvent.click(button);
+    expect(screen.getByText("Direct To Boot")).toBeInTheDocument();
+    expect(screen.getByText("Thanks for letting us know, you order will be come to you in a few minutes.")).toBeInTheDocument();
 
-    await waitFor(() => expect(screen.queryByRole('button')).not.toBeInTheDocument(), {
-      timeout: 5000,
-    });
-
-    expect(screen.getByText('Thanks for letting us know, your order will come to you in a minute')).toBeInTheDocument();
+    expect(screen.queryByText('04-23-33')).not.toBeInTheDocument();
+    expect(screen.queryByText("I'm here")).not.toBeInTheDocument();
   })
-
-  it('shows a phone number when an error occur', async () => {
-    customRender(<DirectToBoot orderId="error-id" />);
-    await waitFor(() => expect(screen.getByRole('button')).toBeEnabled(), {
-      timeout: 5000,
-    });
-
-    const button = screen.getByRole('button');
-    userEvent.click(button);
-
-    const callStoreButton = await screen.findByTestId('call-the-store');
-    expect(callStoreButton).toBeInTheDocument();
-  })
-})
+});

@@ -1,38 +1,57 @@
-import {Status, useOrderStatus} from "./useOrderStatus";
+import { ReactElement } from "react";
 
-const getMessage = (status: Status) => {
+function getMessage(status: string) {
   switch (status) {
-    case 'initialised':
-    case 'ready':
-      return "Please click the button when you have arrived, one of our friendly staff will bring your order to you.";
-    case 'notified':
-      return "Thanks for letting us know, your order will come to you in a minute";
+    case "ready":
+      return "Please click the button when vou have arrived. one of our friendly staff will bring your order to you.";
     case "error":
-      return "Something went wrong, please call the store: 023-0434-212!"
+      return "Seems something went wrong, you can call the following number to notify us instead.";
+    case "initialised":
+      return "We're preparing your order...";
+    case 'notified':
+      return "Thanks for letting us know, you order will be come to you in a few minutes."
+    default:
+      return "";
   }
 }
 
-function createButton(status: Status, notifyStore: () => void) {
-  if (status === 'error') {
-    return <button className="primaryButton" data-testid="call-the-store">Call the store</button>
-  } else if (status === 'initialised') {
-    return <button className="primaryButton" disabled>I am here</button>
-  } else if (status === 'ready') {
-    return <button className="primaryButton" onClick={notifyStore}>I am here</button>
-  } else if (status === 'notified') {
-    return null;
+type StatusButtonProps = {
+  status: string;
+  onClick?: () => void;
+};
+
+const noop = () => {};
+
+const StatusButton = ({
+  status,
+  onClick = noop,
+}: StatusButtonProps): ReactElement | null => {
+  switch (status) {
+    case "initialised":
+      return <button disabled>I'm here</button>;
+    case "ready":
+      return <button onClick={onClick}>I'm here</button>;
+    case "error":
+      return <a href="tel:042333">04-23-33</a>;
+    default:
+      return null;
   }
-}
+};
 
-export function DirectToBoot({orderId}: { orderId: string }) {
-  const {status, notifyStore} = useOrderStatus(orderId);
-  const button = createButton(status, notifyStore);
+export function DirectToBoot({
+  orderId,
+  status,
+}: {
+  orderId: string;
+  status: string;
+}) {
+  const Button = () => <StatusButton status={status} />;
 
-  return <div className="container">
-    <h3>Direct To Boot</h3>
-    <p>{getMessage(status)}</p>
-    <div className="buttonContainer">
-      {button}
+  return (
+    <div>
+      <h3>Direct To Boot</h3>
+      <p>{getMessage(status)}</p>
+      <Button />
     </div>
-  </div>;
+  );
 }
