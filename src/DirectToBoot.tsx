@@ -28,11 +28,11 @@ const StatusButton = ({
 }: StatusButtonProps): ReactElement | null => {
   switch (status) {
     case "initialised":
-      return <button disabled>I'm here</button>;
+      return <button className="primaryButton" disabled>I'm here</button>;
     case "ready":
-      return <button onClick={onClick}>I'm here</button>;
+      return <button className="primaryButton" onClick={onClick}>I'm here</button>;
     case "error":
-      return <a href="tel:042333">04-23-33</a>;
+      return <a href="tel:042333" className="primaryButton">04-23-33</a>;
     default:
       return null;
   }
@@ -48,7 +48,7 @@ export function DirectToBoot({
   const Button = () => <StatusButton status={status} />;
 
   return (
-    <div>
+    <div className="container">
       <h3>Direct To Boot</h3>
       <p>{getMessage(status)}</p>
       <Button />

@@ -15,6 +15,11 @@
   display: flex;
 }
 
+a.primaryButton {
+  text-decoration: none;
+  display: inline-block;
+}
+
 .primaryButton {
   margin-left: auto;
   font-family: "Gill Sans", "Ubuntu", sans-serif;
