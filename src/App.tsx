@@ -1,9 +1,13 @@
 import "./App.css";
-import {DirectToBoot} from "./DirectToBoot";
+import {DirectToBootContainer} from "./DirectToBootContainer";
+
+import createMockServer from "./mockServer";
+
+createMockServer();
 
 function App() {
   return <div className="app">
-    <DirectToBoot status="error" />
+    <DirectToBootContainer orderId="error-id" />
   </div>;
 }
 
