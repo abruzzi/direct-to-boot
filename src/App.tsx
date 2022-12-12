@@ -3,7 +3,7 @@ import {DirectToBoot} from "./DirectToBoot";
 
 function App() {
   return <div className="app">
-    <DirectToBoot orderId="order-id" status="error" />
+    <DirectToBoot status="error" />
   </div>;
 }
 

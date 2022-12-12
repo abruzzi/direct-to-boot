@@ -3,7 +3,7 @@ import { DirectToBoot } from "./DirectToBoot";
 
 describe("direct to boot", () => {
   it("renders the initial state of DirectToBoot section", () => {
-    render(<DirectToBoot orderId="order-id" status="initialised" />);
+    render(<DirectToBoot status="initialised" />);
 
     expect(screen.getByText("Direct To Boot")).toBeInTheDocument();
     expect(screen.getByText("We're preparing your order...")).toBeInTheDocument();
@@ -14,7 +14,7 @@ describe("direct to boot", () => {
   });
 
   it('enables the button when the order is ready', () => {
-    render(<DirectToBoot orderId="order-id" status="ready" />);
+    render(<DirectToBoot status="ready" />);
 
     expect(screen.getByText("Direct To Boot")).toBeInTheDocument();
     expect(screen.getByText("Please click the button when vou have arrived. one of our friendly staff will bring your order to you.")).toBeInTheDocument();
@@ -26,7 +26,7 @@ describe("direct to boot", () => {
 
 
   it('shows store number when error occurs', () => {
-    render(<DirectToBoot orderId="order-id" status="error" />);
+    render(<DirectToBoot status="error" />);
 
     expect(screen.getByText("Direct To Boot")).toBeInTheDocument();
     expect(screen.getByText("Seems something went wrong, you can call the following number to notify us instead.")).toBeInTheDocument();
@@ -36,7 +36,7 @@ describe("direct to boot", () => {
   })
 
   it('shows a message that indicate the store is notified', () => {
-    render(<DirectToBoot orderId="order-id" status="notified" />);
+    render(<DirectToBoot status="notified" />);
 
     expect(screen.getByText("Direct To Boot")).toBeInTheDocument();
     expect(screen.getByText("Thanks for letting us know, you order will be come to you in a few minutes.")).toBeInTheDocument();

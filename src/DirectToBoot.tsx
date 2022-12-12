@@ -8,8 +8,8 @@ function getMessage(status: string) {
       return "Seems something went wrong, you can call the following number to notify us instead.";
     case "initialised":
       return "We're preparing your order...";
-    case 'notified':
-      return "Thanks for letting us know, you order will be come to you in a few minutes."
+    case "notified":
+      return "Thanks for letting us know, you order will be come to you in a few minutes.";
     default:
       return "";
   }
@@ -28,23 +28,29 @@ const StatusButton = ({
 }: StatusButtonProps): ReactElement | null => {
   switch (status) {
     case "initialised":
-      return <button className="primaryButton" disabled>I'm here</button>;
+      return (
+        <button className="primaryButton" disabled>
+          I'm here
+        </button>
+      );
     case "ready":
-      return <button className="primaryButton" onClick={onClick}>I'm here</button>;
+      return (
+        <button className="primaryButton" onClick={onClick}>
+          I'm here
+        </button>
+      );
     case "error":
-      return <a href="tel:042333" className="primaryButton">04-23-33</a>;
+      return (
+        <a href="tel:042333" className="primaryButton">
+          04-23-33
+        </a>
+      );
     default:
       return null;
   }
 };
 
-export function DirectToBoot({
-  orderId,
-  status,
-}: {
-  orderId: string;
-  status: string;
-}) {
+export function DirectToBoot({ status }: { status: string }) {
   const Button = () => <StatusButton status={status} />;
 
   return (
