@@ -50,8 +50,8 @@ const StatusButton = ({
   }
 };
 
-export function DirectToBoot({ status }: { status: string }) {
-  const Button = () => <StatusButton status={status} />;
+export function DirectToBoot({ status, notifyStore = () => {} }: { status: string, notifyStore?: () => void }) {
+  const Button = () => <StatusButton status={status} onClick={notifyStore} />;
 
   return (
     <div className="container">

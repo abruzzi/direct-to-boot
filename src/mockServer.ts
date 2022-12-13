@@ -3,6 +3,15 @@ import {createServer, Response} from 'miragejs';
 const createMockServer = () => {
   return createServer({
     routes() {
+      this.post("/api/orders/:id", (scheme, request) => {
+        const id = request.params.id;
+
+        return {
+          orderId: id,
+          status: 'notified'
+        }
+      })
+
       this.get("/api/orders/:id", (scheme, request) => {
         const id = request.params.id;
 

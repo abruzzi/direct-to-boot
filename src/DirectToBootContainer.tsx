@@ -5,6 +5,11 @@ import axios from "axios";
 export function DirectToBootContainer({orderId}: { orderId: string }) {
   const [status, setStatus] = useState<string>('initialised');
 
+  const notifyStore = async () => {
+    const res = await axios.post(`/api/orders/${orderId}`)
+    setStatus(res.data.status === 'notified' ? 'notified' : 'error')
+  }
+
   useEffect(() => {
     const fetchOrder = async () => {
       try{
@@ -18,5 +23,5 @@ export function DirectToBootContainer({orderId}: { orderId: string }) {
     fetchOrder();
   }, [orderId]);
 
-  return <DirectToBoot status={status}/>;
+  return <DirectToBoot status={status} notifyStore={notifyStore} />;
 }

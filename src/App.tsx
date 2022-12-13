@@ -7,7 +7,7 @@ createMockServer();
 
 function App() {
   return <div className="app">
-    <DirectToBootContainer orderId="error-id" />
+    <DirectToBootContainer orderId="long-order" />
   </div>;
 }
 
