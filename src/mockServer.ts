@@ -1,5 +1,7 @@
 import {createServer, Response} from 'miragejs';
 
+let count = 0;
+
 const createMockServer = () => {
   return createServer({
     routes() {
@@ -17,6 +19,22 @@ const createMockServer = () => {
 
         if(['error-id'].includes(id)) {
           return new Response(500, {}, { errors: ["The downstream is not responding"] })
+        }
+
+        if(['long-order'].includes(id)) {
+          count = count + 1;
+          if(count > 3) {
+            count = 0;
+            return {
+              orderId: id,
+              status: 'ready'
+            }
+          } else {
+            return {
+              orderId: id,
+              status: 'initialised'
+            }
+          }
         }
 
         return {

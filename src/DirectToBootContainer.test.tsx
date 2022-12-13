@@ -56,7 +56,9 @@ describe("direct to boot", () => {
 
     expect(screen.getByText("Direct To Boot")).toBeInTheDocument();
 
-    await screen.findByText("Please click the button when vou have arrived. one of our friendly staff will bring your order to you.")
+    await waitFor(() => screen.findByText("Please click the button when vou have arrived. one of our friendly staff will bring your order to you."), {
+      timeout: 5000
+    })
 
     await waitFor(() => expect(screen.getByText('I\'m here')).toBeEnabled(), {
       timeout: 5000,
