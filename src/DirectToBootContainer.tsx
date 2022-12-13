@@ -1,40 +1,27 @@
-import {useEffect, useState} from "react";
-import {DirectToBoot} from "./DirectToBoot";
-import axios from "axios";
+import { useState } from "react";
+import { DirectToBoot } from "./DirectToBoot";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { fetchOrderStatus, updateOrderStatus } from "./api";
 
-export function DirectToBootContainer({orderId}: { orderId: string }) {
-  const [status, setStatus] = useState<string>('initialised');
+export function DirectToBootContainer({ orderId }: { orderId: string }) {
+  const [status, setStatus] = useState<string>("initialised");
 
-  const notifyStore = async () => {
-    try {
-      const res = await axios.post(`/api/orders/${orderId}`)
-      setStatus(res.data.status === 'notified' ? 'notified' : 'error')
-    } catch(e) {
-      setStatus('error')
-    }
-  }
+  useQuery(["order"], async () => await fetchOrderStatus(orderId), {
+    initialData: { status: "initialised" },
+    retry: 5,
+    onSuccess: () => setStatus("ready"),
+    onError: () => setStatus("error"),
+  });
 
-  useEffect(() => {
-    const fetchOrder = async () => {
-      try{
-        const res = await axios.get(`/api/orders/${orderId}`);
-        if(res.data.status === 'ready') {
-          clearInterval(id)
-        }
-        setStatus(res.data.status)
-      }catch(e) {
-        setStatus('error')
-      }
-    }
+  const mutation = useMutation(updateOrderStatus, {
+    onSuccess: () => setStatus("notified"),
+    onError: () => setStatus("error"),
+  });
 
-    const id = setInterval(() => {
-      fetchOrder();
-    }, 1000);
-
-    return () => {
-      clearInterval(id);
-    }
-  }, [orderId]);
-
-  return <DirectToBoot status={status} notifyStore={notifyStore} />;
+  return (
+    <DirectToBoot
+      status={status}
+      notifyStore={() => mutation.mutate(orderId)}
+    />
+  );
 }

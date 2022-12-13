@@ -4,8 +4,27 @@ import { DirectToBootContainer } from "./DirectToBootContainer";
 import createMockServer from './mockServer';
 import {Server} from "miragejs/server";
 import userEvent from "@testing-library/user-event";
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+import {ReactElement} from "react";
 
 let server: Server;
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retryDelay: 0,
+    },
+  },
+});
+
+const wrapper = ({ children }: { children: ReactElement}) => (
+  <QueryClientProvider client={queryClient}>
+    {children}
+  </QueryClientProvider>
+);
+
+const myRender = (ui: ReactElement) =>
+  render(ui, {wrapper})
 
 describe("direct to boot", () => {
 
@@ -18,7 +37,7 @@ describe("direct to boot", () => {
   })
 
   it("renders the direct to boot section with button enabled", async () => {
-    render(<DirectToBootContainer orderId="order-id" />);
+    myRender(<DirectToBootContainer orderId="order-id" />);
 
     expect(screen.getByText("Direct To Boot")).toBeInTheDocument();
     expect(
@@ -35,7 +54,7 @@ describe("direct to boot", () => {
   });
 
   it('when something went wrong', async () => {
-    render(<DirectToBootContainer orderId="error-id" />);
+    myRender(<DirectToBootContainer orderId="error-id" />);
 
     expect(screen.getByText("Direct To Boot")).toBeInTheDocument();
     expect(
@@ -52,7 +71,7 @@ describe("direct to boot", () => {
   })
 
   it('notify the store', async () => {
-    render(<DirectToBootContainer orderId="order-id" />);
+    myRender(<DirectToBootContainer orderId="order-id" />);
 
     expect(screen.getByText("Direct To Boot")).toBeInTheDocument();
 
