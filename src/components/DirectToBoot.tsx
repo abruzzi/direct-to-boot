@@ -1,5 +1,5 @@
-import { Status } from "./types";
-import { getMessage, noop } from "./utils";
+import { Status } from "../types";
+import { getMessage, noop } from "../utils/utils";
 import { StatusButton } from "./StatusButton";
 
 export function DirectToBoot({
@@ -15,7 +15,9 @@ export function DirectToBoot({
     <div className="container">
       <h3>Direct To Boot</h3>
       <p>{getMessage(status)}</p>
-      <Button />
+      <div className="buttonContainer">
+        <Button />
+      </div>
     </div>
   );
 }

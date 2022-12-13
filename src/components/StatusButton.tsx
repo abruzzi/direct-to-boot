@@ -1,4 +1,4 @@
-import { noop } from "./utils";
+import { noop } from "../utils/utils";
 import { ReactElement } from "react";
 
 type StatusButtonProps = {

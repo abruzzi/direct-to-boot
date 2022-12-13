@@ -1,7 +1,7 @@
 import {render, screen, waitFor} from "@testing-library/react";
 import { DirectToBootContainer } from "./DirectToBootContainer";
 
-import createMockServer from './mockServer';
+import createMockServer from '../mock/mockServer';
 import {Server} from "miragejs/server";
 import userEvent from "@testing-library/user-event";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
