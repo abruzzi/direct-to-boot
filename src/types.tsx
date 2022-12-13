@@ -1,0 +1,1 @@
+export type Status = "initialised" | "ready" | "notified" | "error";
