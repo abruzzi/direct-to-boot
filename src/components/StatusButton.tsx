@@ -5,6 +5,7 @@ type StatusButtonProps = {
   status: string;
   onClick?: () => void;
 };
+
 export const StatusButton = ({
   status,
   onClick = noop,

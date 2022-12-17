@@ -11,7 +11,7 @@ const queryClient = new QueryClient()
 function App() {
   return <div className="app">
     <QueryClientProvider client={queryClient}>
-      <DirectToBootContainer orderId="long-order" />
+      <DirectToBootContainer orderId="order-id" />
     </QueryClientProvider>
   </div>;
 }

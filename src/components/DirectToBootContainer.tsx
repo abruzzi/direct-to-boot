@@ -10,6 +10,7 @@ export function DirectToBootContainer({ orderId }: { orderId: string }) {
   useQuery(["order"], async () => await fetchOrderStatus(orderId), {
     initialData: { status: "initialised" },
     retry: 5,
+    refetchOnWindowFocus: false,
     onSuccess: () => setStatus("ready"),
     onError: () => setStatus("error"),
   });
